@@ -718,11 +718,8 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 380px;
 .dept{fill:var(--land);fill-opacity:1;stroke:var(--land-edge);stroke-width:.9;transition:fill .6s,fill-opacity .6s}
 .dept.tint{fill:color-mix(in srgb,var(--c) 26%,var(--land))}
 .gt{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-opacity:.5}
-.base-roads .nb,.base-satellite .nb{display:none}
-.base-roads .dept{fill:transparent;fill-opacity:0;stroke:var(--lago);stroke-opacity:.35;stroke-dasharray:4 3}
-.base-satellite .dept{fill:transparent;fill-opacity:0;stroke:#fff;stroke-opacity:.45;stroke-dasharray:4 3}
-.base-roads .dept.tint,.base-satellite .dept.tint{fill:var(--c);fill-opacity:.2}
-.base-satellite .gt{stroke:#fff}
+.base-roads .nb,.base-satellite .nb,.base-roads .dept,.base-satellite .dept,.base-roads .gt,.base-satellite .gt{display:none}
+.base-roads .leaflet-container,.base-satellite .leaflet-container{background:#e9e5dc}
 
 .dlabel{pointer-events:none}
 .dlabel span{display:inline-block;transform:translate(-50%,-50%);white-space:nowrap;font:600 12px var(--f-body);letter-spacing:.02em;color:var(--muted);opacity:0;transition:opacity .4s;text-shadow:0 0 3px var(--land),0 0 3px var(--land)}
@@ -938,7 +935,6 @@ const COHORT = [
   {name:"Rose Park-Davis"       ,site:"Salcajá",                 dept:"Quetzaltenango",lat:14.881, lon:-91.457},
   {name:"Louisa Sophia Filmer"  ,site:"Concepción Chiquirichapa",dept:"Quetzaltenango",lat:14.857, lon:-91.623},
   {name:"SJ Ely"                ,site:"San Pedro Sacatepéquez",  dept:"San Marcos",    lat:14.966, lon:-91.776},
-  {name:"Elise Stetler"         ,site:"Comitancillo",            dept:"San Marcos",    lat:15.090, lon:-91.749},
   {name:"Lucas McMillan"        ,site:"Todos Santos Cuchumatán", dept:"Huehuetenango", lat:15.509, lon:-91.603},
   {name:"TJ Brown"              ,site:"Chiantla",                dept:"Huehuetenango", lat:15.355, lon:-91.457},
   {name:"Malia Zuker"           ,site:"Santa María Nebaj",       dept:"Quiché",        lat:15.406, lon:-91.146},
@@ -950,6 +946,7 @@ const COHORT = [
   {name:"Karis Eilenburg"       ,site:"Tactic",                  dept:"Alta Verapaz",  lat:15.318, lon:-90.352},
   {name:"Jake Hirsch"           ,site:"San Luis Jilotepeque",    dept:"Jalapa",        lat:14.645, lon:-89.731},
   {name:"Sarita Fleetwood"      ,site:"Jocotán",                 dept:"Chiquimula",    lat:14.818, lon:-89.389},
+
 ];
 const HOME = {name:"Magdalena", lat:14.548, lon:-90.676};
 /* ===================================================================== */
@@ -990,7 +987,7 @@ L.marker([HOME.lat,HOME.lon],{pane:"labelPane",interactive:false,keyboard:false,
 
 map.fitBounds(GT,{padding:[16,16],animate:false});
 let fitZoom = map.getZoom();
-function zoomFor(){ return base==="simple" ? 9.5 : 12.5; }
+function zoomFor(){ return base==="simple" ? 9.5 : 12; }
 function updateZoomUI(){
   const z=map.getZoom();
   mapEl.classList.toggle("zoomed", z>=9.25);
@@ -1019,7 +1016,7 @@ map.on("click",()=>clearSelection());
 
 /* ---------- base maps ---------- */
 const TILE_DEFS = {
-  roads:[["https://tile.openstreetmap.org/{z}/{x}/{y}.png",'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors']],
+  roads:[["https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>']],
   satellite:[["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}","Imagery © Esri, Maxar, Earthstar Geographics"],
              ["https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",""]]
 };
@@ -1033,10 +1030,13 @@ function setBase(name){
   mapEl.classList.remove("base-simple","base-roads","base-satellite"); mapEl.classList.add("base-"+name);
   document.querySelectorAll(".basesw button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.base===name));
   try{ localStorage.setItem("kan24-base",name); }catch(e){}
+  map.options.zoomSnap = name==="simple" ? .25 : 1;
+  map.options.zoomDelta = name==="simple" ? .5 : 1;
   if(name==="simple"){ map.setMaxZoom(12); }
   else{
     map.setMaxZoom(18);
-    if(!tiles[name]) tiles[name]=TILE_DEFS[name].map(([u,a])=>L.tileLayer(u,{maxZoom:18,attribution:a}));
+    const z=map.getZoom(); if(z!==Math.round(z)) map.setZoom(Math.round(z),{animate:false});
+    if(!tiles[name]) tiles[name]=TILE_DEFS[name].map(([u,a])=>L.tileLayer(u,{maxZoom:18,maxNativeZoom:18,subdomains:"abcd",keepBuffer:4,attribution:a}));
     const main=tiles[name][0]; let ok=false, err=0; const token=++baseToken;
     main.off("tileload tileerror"); main.on("tileload",()=>ok=true); main.on("tileerror",()=>err++);
     tiles[name].forEach(l=>l.addTo(map));
