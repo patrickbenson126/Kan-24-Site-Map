@@ -718,8 +718,8 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 380px;
 .dept{fill:var(--land);fill-opacity:1;stroke:var(--land-edge);stroke-width:.9;transition:fill .6s,fill-opacity .6s}
 .dept.tint{fill:color-mix(in srgb,var(--c) 26%,var(--land))}
 .gt{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-opacity:.5}
-.base-roads .nb,.base-satellite .nb,.base-roads .dept,.base-satellite .dept,.base-roads .gt,.base-satellite .gt{display:none}
-.base-roads .leaflet-container,.base-satellite .leaflet-container{background:#e9e5dc}
+:is(.base-roads,.base-terrain,.base-satellite) :is(.nb,.dept,.gt){display:none}
+:is(.base-roads,.base-terrain,.base-satellite) .leaflet-container{background:#e9e5dc}
 
 .dlabel{pointer-events:none}
 .dlabel span{display:inline-block;transform:translate(-50%,-50%);white-space:nowrap;font:600 12px var(--f-body);letter-spacing:.02em;color:var(--muted);opacity:0;transition:opacity .4s;text-shadow:0 0 3px var(--land),0 0 3px var(--land)}
@@ -837,7 +837,7 @@ kbd{font-family:var(--f-mono);font-size:.75rem;border:1px solid var(--line);bord
   .card .who{font-size:1.25rem}
   .card .nav{margin-top:8px;padding-top:8px}
   .card .nav button{padding:5px 10px}
-  .basesw button{padding:6px 10px;font-size:.82rem}
+  .basesw button{padding:6px 9px;font-size:.8rem}
   .zoomctl button{width:36px;height:36px}
   .fullpill{top:auto;bottom:22px}
   .card:not([hidden]) ~ .fullpill{display:none}
@@ -862,6 +862,7 @@ kbd{font-family:var(--f-mono);font-size:.75rem;border:1px solid var(--line);bord
     <div class="ovl basesw" role="group" aria-label="Map style">
       <button data-base="simple" aria-pressed="true">Simple</button>
       <button data-base="roads" aria-pressed="false">Roads</button>
+      <button data-base="terrain" aria-pressed="false">Terrain</button>
       <button data-base="satellite" aria-pressed="false">Satellite</button>
     </div>
     <div class="ovl zoomctl">
@@ -1016,18 +1017,19 @@ map.on("click",()=>clearSelection());
 
 /* ---------- base maps ---------- */
 const TILE_DEFS = {
-  roads:[["https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>']],
+  roads:[["https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}","Tiles © Esri, HERE, Garmin, © OpenStreetMap contributors"]],
+  terrain:[["https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}","Tiles © Esri, HERE, Garmin, USGS, © OpenStreetMap contributors"]],
   satellite:[["https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}","Imagery © Esri, Maxar, Earthstar Geographics"],
              ["https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}",""]]
 };
-const LABELS = {simple:"Simple",roads:"Roads",satellite:"Satellite"};
+const LABELS = {simple:"Simple",roads:"Roads",terrain:"Terrain",satellite:"Satellite"};
 const tiles = {};
 let base = "simple", baseToken = 0;
 function setBase(name){
   if(!LABELS[name]) name="simple";
   for(const [k,ls] of Object.entries(tiles)) if(k!==name) ls.forEach(l=>map.removeLayer(l));
   base=name;
-  mapEl.classList.remove("base-simple","base-roads","base-satellite"); mapEl.classList.add("base-"+name);
+  mapEl.classList.remove("base-simple","base-roads","base-terrain","base-satellite"); mapEl.classList.add("base-"+name);
   document.querySelectorAll(".basesw button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.base===name));
   try{ localStorage.setItem("kan24-base",name); }catch(e){}
   map.options.zoomSnap = name==="simple" ? .25 : 1;
@@ -1036,7 +1038,7 @@ function setBase(name){
   else{
     map.setMaxZoom(18);
     const z=map.getZoom(); if(z!==Math.round(z)) map.setZoom(Math.round(z),{animate:false});
-    if(!tiles[name]) tiles[name]=TILE_DEFS[name].map(([u,a])=>L.tileLayer(u,{maxZoom:18,maxNativeZoom:18,subdomains:"abcd",keepBuffer:4,attribution:a}));
+    if(!tiles[name]) tiles[name]=TILE_DEFS[name].map(([u,a])=>L.tileLayer(u,{maxZoom:18,maxNativeZoom:18,keepBuffer:4,attribution:a}));
     const main=tiles[name][0]; let ok=false, err=0; const token=++baseToken;
     main.off("tileload tileerror"); main.on("tileload",()=>ok=true); main.on("tileerror",()=>err++);
     tiles[name].forEach(l=>l.addTo(map));
