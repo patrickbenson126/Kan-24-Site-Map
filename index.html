@@ -921,33 +921,34 @@ kbd{font-family:var(--f-mono);font-size:.75rem;border:1px solid var(--line);bord
    One line per person: name, site, department, lat, lon.
    SAMPLE_SITES = true shows the "Sample sites" tag. Set false on reveal day.
    ===================================================================== */
-const SAMPLE_SITES = true;
+const SAMPLE_SITES = false;
+/* START_MODE: "reveal" opens on the wheel (reveal day). Change to "explore" afterwards so the site opens on the full map. */
+const START_MODE = "reveal";
 const COHORT = [
-  {name:"Patrick Benson"        ,site:"Cantel",                  dept:"Quetzaltenango",lat:14.811, lon:-91.457},
-  {name:"Liza Siegel"           ,site:"Santo Domingo Xenacoj",   dept:"Sacatepéquez",  lat:14.680, lon:-90.704},
-  {name:"Zula Booker"           ,site:"Patzún",                  dept:"Chimaltenango", lat:14.683, lon:-91.017},
-  {name:"Lilli Murray"          ,site:"Tecpán Guatemala",        dept:"Chimaltenango", lat:14.762, lon:-91.000},
-  {name:"Robert Marion Sims"    ,site:"San Juan Comalapa",       dept:"Chimaltenango", lat:14.741, lon:-90.887},
-  {name:"Luna Reitz-Neto"       ,site:"San Juan La Laguna",      dept:"Sololá",        lat:14.694, lon:-91.287},
-  {name:"Rosen Clark"           ,site:"Santa Clara La Laguna",   dept:"Sololá",        lat:14.715, lon:-91.305},
-  {name:"Rachel Varsano"        ,site:"Nahualá",                 dept:"Sololá",        lat:14.849, lon:-91.317},
-  {name:"Susan Vance"           ,site:"Momostenango",            dept:"Totonicapán",   lat:15.044, lon:-91.408},
-  {name:"Emily Navarrete"       ,site:"San Francisco El Alto",   dept:"Totonicapán",   lat:14.946, lon:-91.444},
-  {name:"Rose Park-Davis"       ,site:"Salcajá",                 dept:"Quetzaltenango",lat:14.881, lon:-91.457},
-  {name:"Louisa Sophia Filmer"  ,site:"Concepción Chiquirichapa",dept:"Quetzaltenango",lat:14.857, lon:-91.623},
-  {name:"SJ Ely"                ,site:"San Pedro Sacatepéquez",  dept:"San Marcos",    lat:14.966, lon:-91.776},
-  {name:"Lucas McMillan"        ,site:"Todos Santos Cuchumatán", dept:"Huehuetenango", lat:15.509, lon:-91.603},
-  {name:"TJ Brown"              ,site:"Chiantla",                dept:"Huehuetenango", lat:15.355, lon:-91.457},
-  {name:"Malia Zuker"           ,site:"Santa María Nebaj",       dept:"Quiché",        lat:15.406, lon:-91.146},
-  {name:"Brandon Hale"          ,site:"Chichicastenango",        dept:"Quiché",        lat:14.943, lon:-91.112},
-  {name:"Michael Bogle"         ,site:"Sacapulas",               dept:"Quiché",        lat:15.289, lon:-91.090},
-  {name:"Harrison Denbo"        ,site:"Rabinal",                 dept:"Baja Verapaz",  lat:15.085, lon:-90.490},
-  {name:"Tommy Quick"           ,site:"Salamá",                  dept:"Baja Verapaz",  lat:15.103, lon:-90.316},
-  {name:"Madeline Badach"       ,site:"San Cristóbal Verapaz",   dept:"Alta Verapaz",  lat:15.365, lon:-90.479},
-  {name:"Karis Eilenburg"       ,site:"Tactic",                  dept:"Alta Verapaz",  lat:15.318, lon:-90.352},
-  {name:"Jake Hirsch"           ,site:"San Luis Jilotepeque",    dept:"Jalapa",        lat:14.645, lon:-89.731},
-  {name:"Sarita Fleetwood"      ,site:"Jocotán",                 dept:"Chiquimula",    lat:14.818, lon:-89.389},
-
+  {name:"Patrick Benson", site:"San Pablo La Laguna", dept:"Sololá", lat:14.7234, lon:-91.2731},
+  {name:"Liza Siegel", site:"San Miguel Dueñas", dept:"Sacatepéquez", lat:14.5227, lon:-90.7989},
+  {name:"Zula Booker", site:"La Estancia, Cantel", dept:"Quetzaltenango", lat:14.8198, lon:-91.4334},
+  {name:"Lilli Murray", site:"Santo Tomás Milpas Altas", dept:"Sacatepéquez", lat:14.5584, lon:-90.6702},
+  {name:"Robert Marion Sims", site:"San José Chacayá", dept:"Sololá", lat:14.7711, lon:-91.2162},
+  {name:"Luna Reitz-Neto", site:"Sololá", dept:"Sololá", lat:14.7722, lon:-91.1833},
+  {name:"Rosen Clark", site:"Salcajá", dept:"Quetzaltenango", lat:14.8791, lon:-91.4575},
+  {name:"Rachel Varsano", site:"Santa María Nebaj", dept:"El Quiché", lat:15.4058, lon:-91.1470},
+  {name:"Susan Vance", site:"San José Poaquil", dept:"Chimaltenango", lat:14.8172, lon:-90.9121},
+  {name:"Emily Navarrete", site:"Santa Clara La Laguna", dept:"Sololá", lat:14.7149, lon:-91.3035},
+  {name:"Rose Park-Davis", site:"Concepción Chiquirichapa", dept:"Quetzaltenango", lat:14.8551, lon:-91.6240},
+  {name:"Louisa Sophia Filmer", site:"Palestina de los Altos", dept:"Quetzaltenango", lat:14.9332, lon:-91.6940},
+  {name:"SJ Ely", site:"Santa Cruz Balanya", dept:"Chimaltenango", lat:14.6856, lon:-90.9193},
+  {name:"Lucas McMillan", site:"Santa Lucia La Reforma", dept:"Totonicapán", lat:15.1287, lon:-91.2364},
+  {name:"TJ Brown", site:"San Bartolo Aguas Calientes", dept:"Totonicapán", lat:15.0835, lon:-91.4547},
+  {name:"Malia Zuker", site:"Cantel", dept:"Quetzaltenango", lat:14.8112, lon:-91.4557},
+  {name:"Brandon Hale", site:"Santo Domingo Xenacoj", dept:"Sacatepéquez", lat:14.6807, lon:-90.7005},
+  {name:"Michael Bogle", site:"Totonicapán", dept:"Totonicapán", lat:14.9118, lon:-91.3600},
+  {name:"Harrison Denbo", site:"Santa María Cunén", dept:"El Quiché", lat:15.3375, lon:-91.0274},
+  {name:"Tommy Quick", site:"Santa María Visitación", dept:"Sololá", lat:14.7176, lon:-91.3085},
+  {name:"Madeline Badach", site:"Sololá", dept:"Sololá", lat:14.7722, lon:-91.1833},
+  {name:"Karis Eilenburg", site:"Chichicastenango", dept:"El Quiché", lat:14.9429, lon:-91.1117},
+  {name:"Jake Hirsch", site:"Pologua", dept:"Totonicapán", lat:15.0360, lon:-91.5020},
+  {name:"Sarita Fleetwood", site:"Totonicapán", dept:"Totonicapán", lat:14.9118, lon:-91.3600},
 ];
 const HOME = {name:"Magdalena", lat:14.548, lon:-90.676};
 /* ===================================================================== */
@@ -960,12 +961,15 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const first = p => p.name.split(/\s+/)[0];
 const slug = s => s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
-const norm = s => { const k=s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim(); return k==="quetzaltenango"?"quezaltenango":k; };
+const norm = s => { const k=s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim(); return k==="quetzaltenango"?"quezaltenango":k==="el quiche"?"quiche":k; };
 const vars = p => `--c:var(${p.c});--fg:${p.fg}`;
 
 COHORT.forEach((p,i)=>{ p.id=i; p.slug=slug(p.name); [p.c,p.fg]=PALETTE[i%PALETTE.length];
   const w=p.name.split(/\s+/); p.ini=(w[0][0]+(w.length>1?w[w.length-1][0]:"")).toUpperCase(); });
 $("samplechip").hidden = !SAMPLE_SITES;
+/* people who share a town get their pins nudged side by side so none hide behind another */
+const _grp={}; COHORT.forEach(p=>{ const k=p.lat+","+p.lon; (_grp[k]=_grp[k]||[]).push(p); });
+Object.values(_grp).forEach(g=>g.forEach((p,k)=>{ p.dx=(k-(g.length-1)/2)*24; }));
 
 /* ---------- map ---------- */
 const mapEl = $("mapwrap");
@@ -1055,7 +1059,11 @@ function toast(html,ms=2600){ const t=$("toast"); t.innerHTML=html; t.hidden=fal
 
 /* ---------- state ---------- */
 const params = new URLSearchParams(location.search);
-let mode = (params.has("reveal") || location.hash==="#reveal") ? "reveal" : "explore";
+let mode = (params.has("explore") || location.hash==="#explore") ? "explore" : (params.has("reveal") || location.hash==="#reveal" || START_MODE==="reveal") ? "reveal" : "explore";
+const SAVE_KEY="kan24-reveal-progress";
+function saveProgress(){ try{ localStorage.setItem(SAVE_KEY,JSON.stringify(placed.map(p=>p.id))); }catch(e){} }
+function loadProgress(){ try{ const a=JSON.parse(localStorage.getItem(SAVE_KEY)||"[]"); return Array.isArray(a)?a.filter(i=>COHORT[i]):[]; }catch(e){ return []; } }
+function clearProgress(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
 let placed=[], waiting=[], busy=false, rot=0, selected=null, query="", order=[];
 const markers = new Map();
 
@@ -1064,7 +1072,7 @@ function addMarker(p,animate){
   const a = animate && !reduce;
   const html = `<div class="pin${a?" drop":""}" style="${vars(p)}">${a?'<span class="rip"></span>':""}<span class="face">${p.ini}</span><span class="nm">${esc(first(p))}</span></div>`;
   const m = L.marker([p.lat,p.lon],{title:`${p.name}, ${p.site}`,riseOnHover:true,
-    icon:L.divIcon({className:"pinwrap",html,iconSize:[34,44],iconAnchor:[17,44]})}).addTo(map);
+    icon:L.divIcon({className:"pinwrap",html,iconSize:[34,44],iconAnchor:[17-(p.dx||0),44]})}).addTo(map);
   m.on("click",()=>{ if(selected===p && mode==="explore") clearSelection(); else select(p); });
   markers.set(p.id,m);
   return m;
@@ -1182,7 +1190,7 @@ async function reveal(p,{fast=false}={}){
   const m=addMarker(p,!fast);
   if(!fast){ const el=m.getElement(); if(el) el.classList.add("latest"); select(p,{fly:false,animate:true}); }
   else tintDepts(placed);
-  renderRoster(); drawWheel();
+  renderRoster(); drawWheel(); saveProgress();
   if(!waiting.length) setTimeout(finale, fast?250:2600);
 }
 function finale(){
@@ -1191,6 +1199,7 @@ function finale(){
   const f=$("finale");
   f.innerHTML=`<div class="faja thin"></div><div class="in"><h2>Kan 24 is on the map.</h2><p>${placed.length} new homes across ${depts} departments.</p><button class="primary" id="goExplore">Explore the map</button></div>`;
   f.hidden=false;
+  $("modeLink").hidden=false;
   $("goExplore").onclick=()=>setMode("explore");
 }
 
@@ -1225,7 +1234,7 @@ function spin(){
 $("spin").onclick=spin;
 $("all").onclick=async()=>{ if(busy) return; busy=true; $("spin").disabled=true; clearSelection(); await fitAll(.5);
   for(const p of [...waiting]){ await reveal(p,{fast:true}); await new Promise(r=>setTimeout(r,reduce?0:110)); } busy=false; };
-$("reset").onclick=()=>{ if(!busy) setMode("reveal"); };
+$("reset").onclick=()=>{ if(!busy){ clearProgress(); setMode("reveal"); } };
 
 /* ---------- modes ---------- */
 function resetMap(){
@@ -1238,7 +1247,13 @@ function setMode(m){
   mode=m; resetMap();
   $("revealPanel").hidden = m!=="reveal"; $("revealBtns").hidden = m!=="reveal"; $("explorePanel").hidden = m!=="explore";
   $("modeLink").textContent = m==="reveal" ? "Explore mode" : "Reveal mode";
-  if(m==="reveal"){ placed=[]; waiting=[...COHORT]; drawWheel(); }
+  $("modeLink").hidden = m==="reveal";
+  if(m==="reveal"){
+    const done=loadProgress().map(i=>COHORT[i]);
+    placed=[...done]; waiting=COHORT.filter(p=>!done.includes(p));
+    placed.forEach(p=>addMarker(p,false)); tintDepts(placed); drawWheel();
+    if(!waiting.length && placed.length) setTimeout(finale,300);
+  }
   else { placed=[...COHORT]; waiting=[]; COHORT.forEach(p=>addMarker(p,false)); clearSearch(); }
   renderRoster(); fitAll(.8);
   try{ history.replaceState(null,"",location.pathname+(m==="reveal"?"?reveal":"")); }catch(e){}
