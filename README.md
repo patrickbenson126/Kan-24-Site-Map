@@ -5,8 +5,8 @@ Where Kan 24, our Peace Corps Guatemala cohort, will be living for the next two 
 ## Using it
 
 - Tap a pin or a name to see someone's site. Prev / Next steps through everyone.
-- **Directions**: open a card and choose where you're starting from: your current location, Magdalena, or another volunteer's site. The route is drawn on the map with a rough drive time. **Open in Google Maps** hands off to turn-by-turn directions, where you can switch to transit.
-- **Copy link** gives a link straight to that person, for example `…/#liza-siegel`.
+- **Directions**: open a card and choose where you're starting from: your current location, the Peace Corps office in Santa Lucía Milpas Altas, or another volunteer's site. Tap ⇅ to flip it, for example to get from someone's site to the office. The route is drawn on the map with a rough drive time. **Open in Google Maps** hands off to turn-by-turn directions, where you can switch to transit.
+- Adding `#first-last` to the address opens straight to that person, for example `…/#liza-siegel`.
 - Map styles: Simple (works offline), Roads, Terrain, Satellite.
 
 Drive times come from OpenStreetMap road data and run optimistic on mountain roads. Buses take longer.
