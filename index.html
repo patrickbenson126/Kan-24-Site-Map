@@ -874,6 +874,7 @@ kbd{font-family:var(--f-mono);font-size:.75rem;border:1px solid var(--line);bord
 .dir .res b{font-weight:800}
 .dir .res.err{color:var(--bugambilia);font-size:.95rem}
 .dir .note{font-size:.82rem;color:var(--muted);margin:0}
+.dir .res .hint{color:var(--muted)}
 .dir .acts{display:flex;gap:8px;flex-wrap:wrap}
 .dir a.gm{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:8px 15px;background:var(--quetzal);color:#fff;font:700 .95rem var(--f-body);text-decoration:none}
 .dir a.gm:hover{filter:brightness(1.08)}
@@ -1211,7 +1212,6 @@ function dirPanel(p){
     <div class="drow"><select id="dfrom">${html}</select><button class="swap" id="dswap" aria-label="Swap start and end" title="Swap start and end">⇅</button></div>
     <div class="res" id="dres" aria-live="polite">Finding a route…</div>
     <div class="acts"><a class="gm" id="dgm" href="${gmapsUrl(null,p)}" target="_blank" rel="noopener">Open in Google Maps ↗</a><button class="clr" id="dclear">Clear route</button></div>
-    <p class="note">Times are for driving and run optimistic on mountain roads; buses take longer. Google Maps can switch to transit.</p>
   </div>`;
 }
 function gmapsUrl(from,to){
@@ -1219,7 +1219,6 @@ function gmapsUrl(from,to){
   if(from) u+=`&origin=${from.lat},${from.lon}`;
   return u;
 }
-function fmtTime(min){ const h=Math.floor(min/60), m=Math.round(min%60); return h?`${h} h ${m} min`:`${m} min`; }
 function clearRoute(){
   if(routeAbort){ routeAbort.abort(); routeAbort=null; }
   if(routeLayer){ map.removeLayer(routeLayer); routeLayer=null; }
@@ -1263,7 +1262,7 @@ async function routeFromChoice(p){
     originMarker=L.marker([from.lat,from.lon],{interactive:false,keyboard:false,icon:L.divIcon({className:"originwrap",html:'<div class="origin"></div>',iconSize:[18,18],iconAnchor:[9,9]})}).addTo(map);
     const km=rt.distance/1000;
     const desc = dirRev ? `from ${esc(first(p))} to ${esc(from.label)}` : `from ${esc(from.label)}`;
-    res.innerHTML=`<b>About ${fmtTime(rt.duration/60)}</b> by car ${desc} · ${km<10?km.toFixed(1):Math.round(km)} km`;
+    res.innerHTML=`<b>${km<10?km.toFixed(1):Math.round(km)} km</b> by road ${desc}. <span class="hint">Open Google Maps for travel time.</span>`;
     const cardH=$("card").offsetHeight, mobile=innerWidth<=900;
     map.fitBounds(L.latLngBounds(line),{paddingTopLeft:[40,110],paddingBottomRight:[mobile?20:60, mobile?cardH+30:40],maxZoom:14,animate:!reduce});
   }catch(e){
