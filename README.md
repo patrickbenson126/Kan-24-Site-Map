@@ -1,46 +1,30 @@
 # Kan 24 site map
 
-Site map for Kan 24, our Peace Corps Guatemala cohort. One file: `index.html`.
+Where Kan 24, our Peace Corps Guatemala cohort, will be living for the next two years. One file: `index.html`.
 
-## Two modes, one file
+## Using it
 
-| Address | What it shows | Who it's for |
-|---|---|---|
-| `…/` | **Explore**: everyone placed, search, tap a pin or name, Prev/Next through people | Everyone, on phones and laptops |
-| `…/?reveal` | **Reveal**: the wheel, pins drop one at a time | The projector on reveal day |
-| `…/#liza-siegel` | Opens Explore zoomed to that person | Sending someone "here's where I am" |
+- Tap a pin or a name to see someone's site. Prev / Next steps through everyone.
+- **Directions**: open a card and choose where you're starting from: your current location, Magdalena, or another volunteer's site. The route is drawn on the map with a rough drive time. **Open in Google Maps** hands off to turn-by-turn directions, where you can switch to transit.
+- **Copy link** gives a link straight to that person, for example `…/#liza-siegel`.
+- Map styles: Simple (works offline), Roads, Terrain, Satellite.
 
-The footer link switches between modes too.
-
-## Reveal day
-
-1. Run the reveal from the copy of `index.html` on your laptop: double-click it, add `?reveal` to the address. The **Simple** map works offline (the map library and boundaries are inside the file). **Roads** and **Satellite** need internet; if they can't load, the page switches back to Simple on its own.
-2. Afterwards, push the updated `index.html` to GitHub. That push is what makes the sites public. Before it, the site holds only placeholder data.
+Drive times come from OpenStreetMap road data and run optimistic on mountain roads. Buses take longer.
 
 ## Editing the data
 
 Open `index.html` in a text editor and find `COHORT DATA`. One line per person:
 
 ```js
-{name:"Liza Siegel", site:"Santo Domingo Xenacoj", dept:"Sacatepéquez", lat:14.680, lon:-90.704},
+{name:"Liza Siegel", site:"Town", dept:"Department", lat:14.6800, lon:-90.7040},
 ```
 
-Set `SAMPLE_SITES = false` once the real sites are in.
+Pins sit on each municipio's town center. To move someone to their actual community, change their `lat` / `lon`.
 
-## Publishing on GitHub Pages
+## Updating the site
 
-1. Create a new public repo (for example `cohort-map`) and upload `index.html` (and this README).
-2. Repo **Settings → Pages**. Under "Build and deployment", choose **Deploy from a branch**, branch `main`, folder `/ (root)`. Save.
-3. After a minute the site is live at `https://<your-username>.github.io/cohort-map/`.
+Replace `index.html` in the repo (Add file → Upload files) and commit. GitHub Pages updates in about a minute, and the link stays the same.
 
-Updating later: replace `index.html` in the repo (Add file → Upload files) and commit. Pages redeploys in about a minute.
+## Credits
 
-## Map styles
-
-- **Simple**: built-in department boundaries, works offline.
-- **Roads**: OpenStreetMap.
-- **Satellite**: Esri World Imagery with place labels.
-
-The page remembers each visitor's last choice.
-
-Boundaries: Natural Earth via Highsoft map collection (CC BY-NC, personal non-commercial use). Department lines are simplified, so a town right on a border can land on the wrong side.
+Boundaries: Natural Earth via Highsoft map collection (CC BY-NC). Basemaps: Esri. Routing: OSRM demo server, © OpenStreetMap contributors. Department outlines are simplified, so a town right on a border can sit just across the drawn line.
