@@ -772,7 +772,7 @@ main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 380px;
 .card .nav button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:6px 12px;font:600 .9rem var(--f-body);cursor:pointer}
 .card .nav button:hover{background:var(--hover)}
 .card .nav .pos{color:var(--muted);font-size:.88rem;font-variant-numeric:tabular-nums}
-.card .nav .copy{margin-left:auto}
+.card .nav .arrow{width:38px;height:38px;padding:0;display:grid;place-items:center;font-size:1.25rem;line-height:1}
 .card.enter{animation:rise .5s ease both}
 @keyframes rise{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
 
@@ -809,11 +809,13 @@ kbd{font-family:var(--f-mono);font-size:.75rem;border:1px solid var(--line);bord
 .roster{flex:1;min-height:0;overflow:auto;padding:8px 12px 16px;display:flex;flex-direction:column;gap:10px}
 .roster .grp h3{margin:8px 8px 4px;display:flex;justify-content:space-between}
 .roster ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
-.roster li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 8px;border-radius:10px;font-size:1rem;cursor:pointer}
+.roster li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:12px;align-items:center;padding:8px 10px;border-radius:12px;font-size:1rem;cursor:pointer}
+.roster li .nmcol{display:flex;flex-direction:column;min-width:0;line-height:1.2}
+.roster li .n{font-weight:600}
 .roster li:hover{background:var(--hover)}
 .roster li.sel{background:var(--hover);box-shadow:inset 3px 0 0 var(--c)}
-.roster li .dot{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:var(--fg);font:800 .72rem var(--f-body)}
-.roster li .s{color:var(--muted);font-size:.86rem;text-align:right}
+.roster li .dot{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:var(--fg);font:800 .72rem var(--f-body)}
+.roster li .s{color:var(--muted);font-size:.88rem;margin-top:2px}
 .roster li.wait{color:var(--muted)}
 .roster li.wait .dot{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
 .empty{color:var(--muted);padding:8px;font-size:.95rem;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -831,12 +833,10 @@ kbd{font-family:var(--f-mono);font-size:.75rem;border:1px solid var(--line);bord
   header{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
   .sample{margin-left:0}
   .tools{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-  .card{left:10px;bottom:22px;width:calc(100% - 20px);padding:12px 14px}
   .card .av{width:48px;height:48px;font-size:1.1rem}
   .card .where{font-size:1.02rem}
   .card .who{font-size:1.25rem}
   .card .nav{margin-top:8px;padding-top:8px}
-  .card .nav button{padding:5px 10px}
   .basesw button{padding:6px 9px;font-size:.8rem}
   .zoomctl button{width:36px;height:36px}
   .fullpill{top:auto;bottom:22px}
@@ -846,7 +846,8 @@ kbd{font-family:var(--f-mono);font-size:.75rem;border:1px solid var(--line);bord
 @media (prefers-reduced-motion:reduce){.pin.drop,.card.enter,.pin .rip{animation:none}}
 /* Directions */
 .card .nav{flex-wrap:wrap}
-.card .nav .dirbtn{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.card .nav .dirbtn{margin-left:auto;background:var(--bugambilia);color:#fff;border-color:var(--bugambilia);padding:9px 18px;font-weight:700}
+.card .nav .dirbtn:hover{filter:brightness(1.07);background:var(--bugambilia)}
 .card .nav .dirbtn[aria-expanded="true"]{background:transparent;color:var(--ink);border-color:var(--line)}
 .dir{grid-column:1/-1;margin-top:10px;padding-top:12px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:9px}
 .dir label{font-size:.82rem;font-family:var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
@@ -864,13 +865,40 @@ kbd{font-family:var(--f-mono);font-size:.75rem;border:1px solid var(--line);bord
 .originwrap{background:none;border:0}
 .origin{width:18px;height:18px;border-radius:50%;background:var(--ink);border:3px solid var(--panel);box-shadow:0 1px 5px var(--shadow)}
 @media (max-width:900px){
+  /* compact header */
+  header{padding-block:8px 8px;gap:2px 12px;align-items:baseline}
+  header h1{font-size:1.9rem}
+  .eyebrow{font-size:.64rem}
+  .tag{font-size:.95rem;margin:0}
+  /* pinch to zoom on phones; the buttons just add clutter */
+  .zoomctl{display:none}
+  .basesw{left:10px;top:10px}
+  .basesw button{padding:6px 10px;font-size:.8rem}
+  .fullpill{font-size:.85rem;padding:8px 14px}
+  /* card becomes a bottom sheet */
+  .card{left:0;right:0;bottom:0;width:100%;border-radius:20px 20px 0 0;border-width:1px 0 0;gap:2px 12px;
+        padding:20px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+        box-shadow:0 -8px 28px var(--shadow)}
+  .ovl.card{z-index:1001}
+  .card::before{content:"";position:absolute;top:7px;left:50%;width:40px;height:4px;border-radius:2px;background:var(--line);transform:translateX(-50%)}
+  .card .av{width:50px;height:50px;font-size:1.15rem}
+  .card .who{font-size:1.3rem}
+  .card .where{font-size:1rem}
+  .card .x{width:38px;height:38px}
+  .card .nav{margin-top:10px;padding-top:10px;gap:6px}
+  .card .nav .dirbtn{padding:10px 18px;font-size:.95rem}
+  .card .others button{padding:6px 12px}
+  /* list: bigger rows, no zoom-on-focus in the search box */
+  .search input{font-size:16px}
+  .roster{padding:6px 8px 24px}
+  .roster li{padding:10px 10px}
+  .foot{padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
   .dir select{font-size:16px;padding:8px 10px}
   .mapwrap:has(.card:not([hidden])){height:82vh}
   .dir .note{display:none}
   .dir{gap:7px;margin-top:8px;padding-top:8px}
   .dir label{display:none}
   .card .nav{gap:6px}
-  .card .nav button{padding:5px 9px;font-size:.85rem}
   .card .others{margin-top:6px}
 }
 </style>
@@ -1016,7 +1044,7 @@ function fitAll(dur=1){
 }
 function flyToP(p,z,dur=1.2){
   const target=L.latLng(p.lat,p.lon);
-  const shift = innerWidth<=900 ? map.getSize().y*.2 : map.getSize().y*.06;
+  const shift = innerWidth<=900 ? Math.min(map.getSize().y*.3, (($("card").hidden?0:$("card").offsetHeight)/2)+16) : map.getSize().y*.06;
   const center = map.unproject(map.project(target,z).add([0,shift]),z);
   if(reduce){ map.setView(center,z,{animate:false}); return Promise.resolve(); }
   const w=waitMove(dur*1000+500); map.flyTo(center,z,{duration:dur}); return w;
@@ -1128,18 +1156,13 @@ function showCard(p){
     <button class="x" id="cardx" aria-label="Close">✕</button>
     <div class="where">${esc(p.site)}<span> · ${esc(p.dept)}</span></div>
     ${others.length&&!dirOpen?`<div class="others"><span>Also in ${esc(p.dept)}:</span>${others.map(q=>`<button data-id="${q.id}" style="${vars(q)}"><i></i>${esc(first(q))}</button>`).join("")}</div>`:""}
-    <div class="nav"><button id="prev" aria-label="Previous person">‹ Prev</button><span class="pos">${i+1} of ${order.length}</span><button id="next" aria-label="Next person">Next ›</button>
-      <button class="copy dirbtn" id="dirbtn" aria-expanded="${dirOpen}">${dirOpen?"Hide directions":"Directions"}</button><button id="copy">Copy link</button></div>
+    <div class="nav"><button id="prev" class="arrow" aria-label="Previous person">‹</button><span class="pos">${i+1} of ${order.length}</span><button id="next" class="arrow" aria-label="Next person">›</button>
+      <button class="dirbtn" id="dirbtn" aria-expanded="${dirOpen}">${dirOpen?"Hide directions":"Directions"}</button></div>
     ${dirOpen?dirPanel(p):""}`;
   $("cardx").onclick=clearSelection;
   c.querySelectorAll(".others button").forEach(b=>b.onclick=()=>select(COHORT[+b.dataset.id]));
   $("prev").onclick=()=>step(-1); $("next").onclick=()=>step(1);
   $("dirbtn").onclick=()=>{ dirOpen=!dirOpen; if(!dirOpen) clearRoute(); showCard(p); if(dirOpen) routeFromChoice(p); };
-  $("copy").onclick=()=>{
-    const url=location.href.split("#")[0].split("?")[0]+"#"+p.slug;
-    const fallback=()=>{ toast(`Copy this link:<input id="cl" value="${esc(url)}" readonly>`,9000); const inp=$("cl"); inp.focus(); inp.select(); };
-    try{ navigator.clipboard.writeText(url).then(()=>toast(`Link to ${esc(first(p))} copied`),fallback); }catch(e){ fallback(); }
-  };
   if(dirOpen){
     $("dfrom").onchange=e=>{ store.set("kan24-from",e.target.value); routeFromChoice(p); };
     $("dclear").onclick=()=>{ dirOpen=false; clearRoute(); showCard(p); flyToP(p, Math.max(map.getZoom(), zoomFor()), .8); };
@@ -1210,7 +1233,7 @@ async function routeFromChoice(p){
     const km=rt.distance/1000;
     res.innerHTML=`<b>About ${fmtTime(rt.duration/60)}</b> by car from ${esc(from.label)} · ${km<10?km.toFixed(1):Math.round(km)} km`;
     const cardH=$("card").offsetHeight, mobile=innerWidth<=900;
-    map.fitBounds(L.latLngBounds(line),{paddingTopLeft:[40,70],paddingBottomRight:[mobile?20:60, mobile?cardH+30:40],maxZoom:14,animate:!reduce});
+    map.fitBounds(L.latLngBounds(line),{paddingTopLeft:[40,110],paddingBottomRight:[mobile?20:60, mobile?cardH+30:40],maxZoom:14,animate:!reduce});
   }catch(e){
     if(e.name==="AbortError") return;
     if(selected!==p || !$("dres")) return;
@@ -1221,7 +1244,7 @@ async function routeFromChoice(p){
 
 /* ---------- list ---------- */
 function li(p){
-  return `<li class="${selected===p?"sel":""}" data-id="${p.id}" tabindex="0" style="${vars(p)}"><span class="dot">${p.ini}</span><span>${esc(p.name)}</span><span class="s">${esc(p.site)}</span></li>`;
+  return `<li class="${selected===p?"sel":""}" data-id="${p.id}" tabindex="0" style="${vars(p)}"><span class="dot">${p.ini}</span><span class="nmcol"><span class="n">${esc(p.name)}</span><span class="s">${esc(p.site)}</span></span></li>`;
 }
 function renderRoster(){
   const R=$("roster");
@@ -1239,6 +1262,11 @@ function onList(e){
   if(selected===p){ clearSelection(); return; }
   select(p);
 }
+(function(){ const c=$("card"); let y0=null;
+  c.addEventListener("touchstart",e=>{ if(e.target.closest("select,button,a")) return; y0=e.touches[0].clientY; },{passive:true});
+  c.addEventListener("touchmove",e=>{ if(y0===null) return; const dy=e.touches[0].clientY-y0; if(dy>0) c.style.transform=`translateY(${dy}px)`; },{passive:true});
+  c.addEventListener("touchend",e=>{ if(y0===null) return; const dy=e.changedTouches[0].clientY-y0; y0=null; c.style.transform=""; if(dy>70) clearSelection(); });
+})();
 $("roster").addEventListener("click",onList);
 $("roster").addEventListener("keydown",e=>{ if(e.key==="Enter") onList(e); });
 
